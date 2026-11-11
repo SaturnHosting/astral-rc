@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "astral-rc",
+  "version": "${version}",
+  "name": "RC",
+  "description": "Relay Chat client for Astral.",
+  "authors": [
+    "Astral"
+  ],
+  "contact": {
+    "sources": "https://github.com/SaturnHosting/astral-rc"
+  },
+  "icon": "assets/astral/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "meteor": [
+      "dev.astral.rc.AstralRC"
+    ]
+  },
+  "mixins": [
+    "astral-rc.mixins.json"
+  ],
+  "custom": {
+    "meteor-client:color": "128,128,128",
+    "modmenu": {
+      "parent": {
+        "id": "meteor-client"
+      }
+    }
+  },
+  "depends": {
+    "java": ">=${jdk_version}",
+    "minecraft": "${minecraft_version}",
+    "meteor-client": "*"
+  }
+}

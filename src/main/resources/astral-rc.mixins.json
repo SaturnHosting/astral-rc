@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "dev.astral.rc.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "ChatMixin",
+    "ChatHudMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
