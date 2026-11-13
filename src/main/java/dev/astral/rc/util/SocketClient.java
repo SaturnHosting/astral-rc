@@ -10,6 +10,8 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SocketClient {
     private Socket socket;
@@ -47,6 +49,10 @@ public class SocketClient {
 
     public void sendInfo() throws IOException {
         sendRaw("INFO");
+    }
+
+    public void reqChannelList() throws IOException {
+        sendRaw("CHANNEL_LIST");
     }
 
     public void sendChannelChange(String channel) throws IOException {
@@ -115,6 +121,25 @@ public class SocketClient {
                                 .withStyle(ChatFormatting.WHITE));
 
                         Utils.chatMessage(message);
+                    } else if (line.startsWith("CHANNEL_LIST")) {
+                        String channelData = line.substring("CHANNEL_LIST ".length());
+
+                        channelData = channelData.replace("[", "")
+                            .replace("]", "")
+                            .replace("'", "");
+
+                        String channels = Arrays.stream(channelData.split(","))
+                            .map(String::trim)
+                            .collect(Collectors.joining(", "));
+
+                        MutableComponent message = Component.literal("Channels: ")
+                            .withStyle(ChatFormatting.GRAY)
+                            .append(Component.literal(channels)
+                                .withStyle(ChatFormatting.WHITE));
+                        Utils.chatMessage(message);
+                    } else if (line.startsWith("CHANNEL_CHANGE_FAILED")) {
+                        String channel = line.substring("CHANNEL_CHANGE_FAILED ".length());
+                        Utils.chatMessage(String.format("Failed to change channel, you are still on channel %s", channel), Utils.MessageType.ERROR);
                     }
                     else if (line.equals("KEEPALIVE")) {
                         sendRaw("ALIVE");

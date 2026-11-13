@@ -53,18 +53,32 @@ public class RCCommand extends Command {
                         })
                     )
                 )
-            .then(literal("info")
-                .executes(context -> {
-                    RCModule module = Modules.get().get(RCModule.class);
+                .then(literal("info")
+                    .executes(context -> {
+                        RCModule module = Modules.get().get(RCModule.class);
 
-                    try {
-                        module.socketClient.sendInfo();
-                    } catch (Exception e) {
-                        error("Failed to send info request: " + e.getMessage());
-                    }
+                        try {
+                            module.socketClient.sendInfo();
+                        } catch (Exception e) {
+                            error("Failed to send info request: " + e.getMessage());
+                        }
 
-                    return SINGLE_SUCCESS;
-                }))
+                        return SINGLE_SUCCESS;
+                    })
+                )
+                .then(literal("list")
+                    .executes(context -> {
+                        RCModule module = Modules.get().get(RCModule.class);
+
+                        try {
+                            module.socketClient.reqChannelList();
+                        } catch (Exception e) {
+                            error("Failed to request channe list: " + e.getMessage());
+                        }
+
+                        return SINGLE_SUCCESS;
+                    })
+                )
         );
 
         builder.executes(context -> {
